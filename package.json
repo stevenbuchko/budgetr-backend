@@ -1,0 +1,24 @@
+{
+  "name": "budgetr-backend",
+  "version": "1.0.0",
+  "description": "backend for the budgetr app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevenbuchko/budgetr-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stevenbuchko/budgetr-backend/issues"
+  },
+  "homepage": "https://github.com/stevenbuchko/budgetr-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "uuid": "^3.4.0"
+  }
+}
