@@ -17,13 +17,13 @@ pool.on('connect', () => {
 const createTables = () => {
     const queryText =
         `CREATE TABLE IF NOT EXISTS
-      budgets(
-        id UUID PRIMARY KEY,
-        limit NUMERIC(2) NOT NULL,
-        expenses NUMERIC(2) NOT NULL,
-        created_date TIMESTAMP,
-        modified_date TIMESTAMP
-      )`;
+            budgets(
+                id UUID PRIMARY KEY,
+                top MONEY NOT NULL,
+                expenses MONEY NOT NULL,
+                created_date TIMESTAMP,
+                modified_date TIMESTAMP
+            )`;
 
     pool.query(queryText)
         .then((res) => {

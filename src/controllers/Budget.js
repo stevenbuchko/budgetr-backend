@@ -11,12 +11,12 @@ const Budget = {
      */
     async create(req, res) {
         const text = `INSERT INTO
-      budgets(id, limit, expenses, created_date, modified_date)
+      budgets(id, top, expenses, created_date, modified_date)
       VALUES($1, $2, $3, $4, $5)
       returning *`;
         const values = [
             uuidv4(),
-            req.body.limit,
+            req.body.top,
             req.body.expenses,
             moment(new Date()),
             moment(new Date())
@@ -71,7 +71,7 @@ const Budget = {
     async update(req, res) {
         const findOneQuery = 'SELECT * FROM budgets WHERE id=$1';
         const updateOneQuery = `UPDATE budgets
-      SET limit=$1,expenses=$2,modified_date=$3
+      SET top=$1,expenses=$2,modified_date=$3
       WHERE id=$4 returning *`;
         try {
             const { rows } = await db.query(findOneQuery, [req.params.id]);
@@ -79,7 +79,7 @@ const Budget = {
                 return res.status(404).send({ 'message': 'budget not found' });
             }
             const values = [
-                req.body.limit || rows[0].limit,
+                req.body.top || rows[0].top,
                 req.body.expenses || rows[0].expenses,
                 moment(new Date()),
                 req.params.id
