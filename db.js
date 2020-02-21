@@ -20,7 +20,9 @@ const createTables = () => {
         users(
             id UUID PRIMARY KEY,
             budget_amount MONEY NOT NULL,
+            budget_amount_value NUMERIC(10,2) NOT NULL,
             total_expenses MONEY NOT NULL,
+            total_expenses_value NUMERIC(10,2) NOT NULL,
             created_date TIMESTAMP
         )`;
 

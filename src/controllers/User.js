@@ -7,16 +7,18 @@ const User = {
      * Create A User
      * @param {object} req 
      * @param {object} res
-     * @returns {object} budget object 
+     * @returns {object} user object 
      */
     async create(req, res) {
         const text = `INSERT INTO
-        users(id, budget_amount, total_expenses, created_date)
-        VALUES($1, $2, $3, $4)
+        users(id, budget_amount, budget_amount_value, total_expenses, total_expenses_value, created_date)
+        VALUES($1, $2, $3, $4, $5, $6)
         returning *`;
         const values = [
             uuidv4(),
             req.body.budget_amount,
+            req.body.budget_amount,
+            req.body.total_expenses,
             req.body.total_expenses,
             moment(new Date())
         ];
@@ -70,8 +72,8 @@ const User = {
     async update(req, res) {
         const findOneQuery = 'SELECT * FROM users WHERE id=$1';
         const updateOneQuery = `UPDATE users
-      SET budget_amount=$1, total_expenses=$2
-      WHERE id=$3 returning *`;
+      SET budget_amount=$1, budget_amount_value=$2, total_expenses=$3, total_expenses_value=$4
+      WHERE id=$5 returning *`;
         try {
             const { rows } = await db.query(findOneQuery, [req.params.id]);
             if (!rows[0]) {
@@ -79,7 +81,9 @@ const User = {
             }
             const values = [
                 req.body.budget_amount || rows[0].budget_amount,
+                req.body.budget_amount || rows[0].budget_amount_value,
                 req.body.total_expenses || rows[0].total_expenses,
+                req.body.total_expenses || rows[0].total_expenses_value,
                 req.params.id
             ];
             const response = await db.query(updateOneQuery, values);
