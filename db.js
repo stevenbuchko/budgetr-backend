@@ -17,13 +17,12 @@ pool.on('connect', () => {
 const createTables = () => {
     const queryText =
         `CREATE TABLE IF NOT EXISTS
-            budgets(
-                id UUID PRIMARY KEY,
-                top MONEY NOT NULL,
-                expenses MONEY NOT NULL,
-                created_date TIMESTAMP,
-                modified_date TIMESTAMP
-            )`;
+        users(
+            id UUID PRIMARY KEY,
+            budget_amount MONEY NOT NULL,
+            total_expenses MONEY NOT NULL,
+            created_date TIMESTAMP
+        )`;
 
     pool.query(queryText)
         .then((res) => {
@@ -40,7 +39,7 @@ const createTables = () => {
  * Drop Tables
  */
 const dropTables = () => {
-    const queryText = 'DROP TABLE IF EXISTS budgets';
+    const queryText = 'DROP TABLE IF EXISTS users';
     pool.query(queryText)
         .then((res) => {
             console.log(res);

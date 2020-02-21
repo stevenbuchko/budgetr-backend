@@ -2,23 +2,22 @@ import moment from 'moment';
 import uuidv4 from 'uuid/v4';
 import db from '../db';
 
-const Budget = {
+const User = {
     /**
-     * Create A Budget
+     * Create A User
      * @param {object} req 
      * @param {object} res
      * @returns {object} budget object 
      */
     async create(req, res) {
         const text = `INSERT INTO
-      budgets(id, top, expenses, created_date, modified_date)
-      VALUES($1, $2, $3, $4, $5)
-      returning *`;
+        users(id, budget_amount, total_expenses, created_date)
+        VALUES($1, $2, $3, $4)
+        returning *`;
         const values = [
             uuidv4(),
-            req.body.top,
-            req.body.expenses,
-            moment(new Date()),
+            req.body.budget_amount,
+            req.body.total_expenses,
             moment(new Date())
         ];
 
@@ -30,13 +29,13 @@ const Budget = {
         }
     },
     /**
-     * Get All Budgets
+     * Get All Users
      * @param {object} req 
      * @param {object} res 
-     * @returns {object} budgets array
+     * @returns {object} users array
      */
     async getAll(req, res) {
-        const findAllQuery = 'SELECT * FROM budgets';
+        const findAllQuery = 'SELECT * FROM users';
         try {
             const { rows, rowCount } = await db.query(findAllQuery);
             return res.status(200).send({ rows, rowCount });
@@ -45,17 +44,17 @@ const Budget = {
         }
     },
     /**
-     * Get A Budget
+     * Get A User
      * @param {object} req 
      * @param {object} res
-     * @returns {object} budget object
+     * @returns {object} user object
      */
     async getOne(req, res) {
-        const text = 'SELECT * FROM budgets WHERE id = $1';
+        const text = 'SELECT * FROM users WHERE id = $1';
         try {
             const { rows } = await db.query(text, [req.params.id]);
             if (!rows[0]) {
-                return res.status(404).send({ 'message': 'budget not found' });
+                return res.status(404).send({ 'message': 'user not found' });
             }
             return res.status(200).send(rows[0]);
         } catch (error) {
@@ -66,22 +65,21 @@ const Budget = {
      * Update A Budget
      * @param {object} req 
      * @param {object} res 
-     * @returns {object} updated budget
+     * @returns {object} updated user
      */
     async update(req, res) {
-        const findOneQuery = 'SELECT * FROM budgets WHERE id=$1';
-        const updateOneQuery = `UPDATE budgets
-      SET top=$1,expenses=$2,modified_date=$3
-      WHERE id=$4 returning *`;
+        const findOneQuery = 'SELECT * FROM users WHERE id=$1';
+        const updateOneQuery = `UPDATE users
+      SET budget_amount=$1, total_expenses=$2
+      WHERE id=$3 returning *`;
         try {
             const { rows } = await db.query(findOneQuery, [req.params.id]);
             if (!rows[0]) {
-                return res.status(404).send({ 'message': 'budget not found' });
+                return res.status(404).send({ 'message': 'user not found' });
             }
             const values = [
-                req.body.top || rows[0].top,
-                req.body.expenses || rows[0].expenses,
-                moment(new Date()),
+                req.body.budget_amount || rows[0].budget_amount,
+                req.body.total_expenses || rows[0].total_expenses,
                 req.params.id
             ];
             const response = await db.query(updateOneQuery, values);
@@ -91,17 +89,17 @@ const Budget = {
         }
     },
     /**
-     * Delete A Budget
+     * Delete A User
      * @param {object} req 
      * @param {object} res 
      * @returns {void} return statuc code 204 
      */
     async delete(req, res) {
-        const deleteQuery = 'DELETE FROM budgets WHERE id=$1 returning *';
+        const deleteQuery = 'DELETE FROM users WHERE id=$1 returning *';
         try {
             const { rows } = await db.query(deleteQuery, [req.params.id]);
             if (!rows[0]) {
-                return res.status(404).send({ 'message': 'budget not found' });
+                return res.status(404).send({ 'message': 'user not found' });
             }
             return res.status(204).send({ 'message': 'deleted' });
         } catch (error) {
@@ -110,4 +108,4 @@ const Budget = {
     }
 }
 
-export default Budget;
+export default User;
