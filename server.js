@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import 'babel-polyfill';
 import User from './src/controllers/User';
+import Plaid from './src/controllers/Plaid';
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ app.get('/api/v1/users', User.getAll);
 app.get('/api/v1/users/:id', User.getOne);
 app.put('/api/v1/users/:id', User.update);
 app.delete('/api/v1/users/:id', User.delete);
+app.post('/api/v1/plaid/:id', Plaid.receivePublicToken);
 
 app.listen(3000);
 console.log('app running on port ', 3000);
