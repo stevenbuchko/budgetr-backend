@@ -32,13 +32,6 @@ const Plaid = {
             ITEM_ID = tokenResponse.item_id;
             console.log("access: " + ACCESS_TOKEN);
             return Wallet.create(req.params.id, ACCESS_TOKEN, ITEM_ID, res);
-
-            // res.json({
-            //     access_token: ACCESS_TOKEN,
-            //     item_id: ITEM_ID
-            // });
-            // console.log("access token below");
-            // console.log(ACCESS_TOKEN);
         });
     },
     async getAccountInformation(req, res) {
@@ -75,7 +68,7 @@ const Plaid = {
         let startDate = moment()
             .subtract(30, "days")
             .format("YYYY-MM-DD");
-        let endDate = momemt().format("YYYY-MM-DD");
+        let endDate = moment().format("YYYY-MM-DD");
         console.log("made it past variables");
         let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
         let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
