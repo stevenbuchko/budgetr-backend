@@ -43,7 +43,7 @@ const Plaid = {
     },
     async getAccountInformation(req, res) {
         // Get user ID
-        let USER_ID = req.body.user_id;
+        let USER_ID = [req.params.id];
         console.log("user_id:" + USER_ID);
 
         let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
@@ -54,10 +54,12 @@ const Plaid = {
             console.log(error);
             console.log(tokenResponse);
             let NAME = tokenResponse.accounts[0].name;
+            let MASK = tokenResponse.accounts[0].mask;
             console.log(NAME);
 
             res.json({
-                name: NAME
+                name: NAME,
+                mask: MASK
             });
         })
     }
