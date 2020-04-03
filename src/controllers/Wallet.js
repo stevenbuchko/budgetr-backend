@@ -27,6 +27,40 @@ const Wallet = {
             return res.status(400).send(error);
         }
     },
+
+    async getAccessTokenByUserId(user_id) {
+        console.log(user_id);
+        const text = 'SELECT access_token FROM wallets WHERE user_id = \'' + user_id + '\'';
+        console.log(text);
+        try {
+            const { rows } = await db.query(text);
+            console.log("rows: " + JSON.stringify(rows));
+            const ACCESS_TOKEN = rows[0].access_token;
+            console.log("my access: " + ACCESS_TOKEN);
+            return ACCESS_TOKEN;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    //     /**
+    //  * Get A User
+    //  * @param {object} req 
+    //  * @param {object} res
+    //  * @returns {object} user object
+    //  */
+    // async getOne(req, res) {
+    //     const text = 'SELECT * FROM users WHERE id = $1';
+    //     try {
+    //         const { rows } = await db.query(text, [req.params.id]);
+    //         if (!rows[0]) {
+    //             return res.status(404).send({ 'message': 'user not found' });
+    //         }
+    //         return res.status(200).send(rows[0]);
+    //     } catch (error) {
+    //         return res.status(400).send(error)
+    //     }
+    // },
 }
 
 export default Wallet;

@@ -40,6 +40,26 @@ const Plaid = {
             // console.log("access token below");
             // console.log(ACCESS_TOKEN);
         });
+    },
+    async getAccountInformation(req, res) {
+        // Get user ID
+        let USER_ID = req.body.user_id;
+        console.log("user_id:" + USER_ID);
+
+        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
+
+        console.log("access boy: " + ACCESS_TOKEN);
+
+        client.getAccounts(ACCESS_TOKEN, function (error, tokenResponse) {
+            console.log(error);
+            console.log(tokenResponse);
+            let NAME = tokenResponse.accounts[0].name;
+            console.log(NAME);
+
+            res.json({
+                name: NAME
+            });
+        })
     }
 };
 
