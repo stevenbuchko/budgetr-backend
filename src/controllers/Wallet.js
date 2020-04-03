@@ -41,6 +41,17 @@ const Wallet = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    async getAccountIdByAccessToken(access_token) {
+        const text = 'SELECT account_id FROM wallets WHERE access_token = \'' + access_token + '\'';
+        try {
+            const { rows } = await db.query(text);
+            const ACCOUNT_ID = rows[0].account_id;
+            return ACCOUNT_ID;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     //     /**

@@ -47,19 +47,25 @@ const Plaid = {
         console.log("user_id:" + USER_ID);
 
         let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
 
         console.log("access boy: " + ACCESS_TOKEN);
 
         client.getAccounts(ACCESS_TOKEN, function (error, tokenResponse) {
             console.log(error);
             console.log(tokenResponse);
-            let NAME = tokenResponse.accounts[0].name;
-            let MASK = tokenResponse.accounts[0].mask;
-            console.log(NAME);
 
-            res.json({
-                name: NAME,
-                mask: MASK
+            tokenResponse.accounts.forEach(account => {
+                if (account.account_id == ACCOUNT_ID) {
+                    let NAME = account.name;
+                    let MASK = account.mask;
+                    res.json({
+                        name: NAME,
+                        mask: MASK
+                    });
+                } else {
+
+                }
             });
         })
     }
