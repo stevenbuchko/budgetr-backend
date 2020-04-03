@@ -20,6 +20,7 @@ app.put('/api/v1/users/:id', User.update);
 app.delete('/api/v1/users/:id', User.delete);
 app.post('/api/v1/plaid/:id', Plaid.receivePublicToken);
 app.get('/api/v1/plaid/:id', Plaid.getAccountInformation);
+app.get('/api/v1/transactions/:id', Plaid.getTransactions);
 
 app.listen(3000);
 console.log('app running on port ', 3000);

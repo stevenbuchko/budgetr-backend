@@ -68,31 +68,33 @@ const Plaid = {
                 }
             });
         })
+    },
+    async getTransactions(req, res) {
+        let USER_ID = [req.params.id];
+        // Pull transactions for the last 30 days
+        let startDate = moment()
+            .subtract(30, "days")
+            .format("YYYY-MM-DD");
+        let endDate = momemt().format("YYYY-MM-DD");
+        console.log("made it past variables");
+        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+        client.getTransactions(
+            ACCESS_TOKEN,
+            startDate,
+            endDate,
+            {
+                account_ids: [ACCOUNT_ID]
+            },
+            function (error, transactionResponse) {
+                res.json({
+                    transactions: transactionResponse
+                });
+                console.log(transactionResponse);
+            }
+        )
     }
+
 };
 
 export default Plaid;
-
-// async getTransactions = (req, res) => {
-//     // Pull transactions for the last 30 days
-//     let startDate = moment()
-//         .subtract(30, "days")
-//         .format("YYYY-MM-DD");
-//     let endDate = momemt().format("YYYY-MM-DD");
-//     console.log("made it past variables");
-//     client.getTransactions(
-//         ACCESS_TOKEN,
-//         startDate,
-//         endDate,
-//         {
-//             count: 250,
-//             offset: 0
-//         },
-//         function (error, transactionResponse) {
-//             res.json({ transactions: transactionResponse });
-//             // TRANSACTIONS LOGGED BELOW!
-//             // They will show up in the terminal that you are running nodeman in.
-//             console.log(transactionResponse);
-//         }
-//     )
-// }
