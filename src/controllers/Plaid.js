@@ -62,12 +62,11 @@ const Plaid = {
             });
         })
     },
-    async getTransactions(req, res) {
+    async getTransactions30(req, res) {
         let USER_ID = [req.params.id];
-        let NUM_OF_DAYS = parseInt([req.body.num_of_days]);
         // Pull transactions for the last 30 days
         let startDate = moment()
-            .subtract(NUM_OF_DAYS, "days")
+            .subtract(30, "days")
             .format("YYYY-MM-DD");
         let endDate = moment().format("YYYY-MM-DD");
         console.log("made it past variables");
