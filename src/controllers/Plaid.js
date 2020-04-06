@@ -86,8 +86,12 @@ const Plaid = {
                 console.log(transactionResponse);
             }
         )
+    },
+    async getCategories(req, res) {
+        client.getCategories(function (error, transactionResponse) {
+            res.json({ transactionResponse });
+        })
     }
-
 };
 
 export default Plaid;
