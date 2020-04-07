@@ -9,15 +9,16 @@ const Wallet = {
      * @param {object} res
      * @returns {object} user object 
      */
-    async create(user_id, access_token, item_id, res) {
+    async create(user_id, access_token, item_id, account_id, res) {
         const text = `INSERT INTO
-        wallets(item_id, access_token, user_id)
-        VALUES($1, $2, $3)
+        wallets(item_id, access_token, user_id, account_id)
+        VALUES($1, $2, $3, $4)
         returning *`;
         const values = [
             item_id,
             access_token,
-            user_id
+            user_id,
+            account_id
         ];
         console.log("made it in wallet.create");
         try {
