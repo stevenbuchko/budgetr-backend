@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import 'babel-polyfill';
 import User from './src/controllers/User';
 import Plaid from './src/controllers/Plaid';
+import Transactions from './src/controllers/Transactions';
 
 dotenv.config();
 const app = express();
@@ -21,10 +22,9 @@ app.delete('/api/v1/users/:id', User.delete);
 app.post('/api/v1/plaid/:id', Plaid.receivePublicToken);
 app.get('/api/v1/plaid/:id', Plaid.getAccountInformation);
 app.get('/api/v1/transactions30/:id', Plaid.getTransactions30);
-app.get('/api/v1/transactionsMonth/:id', Plaid.getTransactionsCurrentMonth);
-app.get('/api/v1/transactionsYear/:id', Plaid.getTransactionsCurrentYear);
 app.get('/api/v1/categories', Plaid.getCategories);
 app.delete('/api/v1/plaid/:id', Plaid.removeItem);
+app.post('/api/v1/transactions/:id', Transactions.getTotalExpensesCurrentMonth);
 
 app.listen(3000);
 console.log('app running on port ', 3000);

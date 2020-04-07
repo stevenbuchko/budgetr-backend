@@ -97,8 +97,8 @@ const Plaid = {
             }
         )
     },
-    async getTransactionsCurrentMonth(req, res) {
-        let USER_ID = [req.params.id];
+    async getTransactionsCurrentMonth(user_id) {
+        let USER_ID = user_id;
         // Pull transactions for the current month
         let currentDate = moment();
         let currentMonth = currentDate.format("MM");
@@ -110,6 +110,11 @@ const Plaid = {
         console.log("made it past variables");
         let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
         let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+
+        let transactionResolver = () => { }
+        let transactionPromise = new Promise(r => {
+            transactionResolver = r
+        })
         client.getTransactions(
             ACCESS_TOKEN,
             startDate,
@@ -118,12 +123,12 @@ const Plaid = {
                 account_ids: [ACCOUNT_ID]
             },
             function (error, transactionResponse) {
-                res.json({
-                    transactions: transactionResponse
-                });
-                console.log(transactionResponse);
+                console.log("error: " + error);
+                console.log(transactionResponse.transactions);
+                transactionResolver(transactionResponse.transactions)
             }
         )
+        return transactionPromise
     },
     async getTransactionsCurrentYear(req, res) {
         let USER_ID = [req.params.id];
