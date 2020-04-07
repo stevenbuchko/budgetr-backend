@@ -9,7 +9,11 @@ const Transactions = {
         console.log("respondo: " + transactions);
 
         transactions.forEach(transaction => {
-            total_expenses += transaction.amount;
+            if (transaction.amount > 0) {
+                total_expenses += transaction.amount;
+            } else {
+
+            }
         });
 
         console.log("total expenses: " + total_expenses);
