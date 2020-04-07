@@ -19,11 +19,11 @@ const Transactions = {
         console.log("total expenses: " + total_expenses);
 
         let total_expenses_amount = total_expenses.toFixed(2);
-        let total_expenses_formated = "$" + (total_expenses_amount).toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        let total_expenses_formatted = "$" + (total_expenses_amount).toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
 
         res.json({
             total_expenses_amount: total_expenses_amount,
-            total_expenses_formated: total_expenses_formated
+            total_expenses_formatted: total_expenses_formatted
         });
     }
 }
