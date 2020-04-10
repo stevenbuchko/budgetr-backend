@@ -72,11 +72,86 @@ const Plaid = {
             });
         })
     },
-    async getTransactions30(req, res) {
+    async getTransactions30Days(req, res) {
         let USER_ID = [req.params.id];
         // Pull transactions for the last 30 days
         let startDate = moment()
             .subtract(30, "days")
+            .format("YYYY-MM-DD");
+        let endDate = moment().format("YYYY-MM-DD");
+        console.log("made it past variables");
+        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+        client.getTransactions(
+            ACCESS_TOKEN,
+            startDate,
+            endDate,
+            {
+                account_ids: [ACCOUNT_ID]
+            },
+            function (error, transactionResponse) {
+                res.json({
+                    transactions: transactionResponse
+                });
+                console.log(transactionResponse);
+            }
+        )
+    },
+    async getTransactions7Days(req, res) {
+        let USER_ID = [req.params.id];
+
+        let startDate = moment()
+            .subtract(7, "days")
+            .format("YYYY-MM-DD");
+        let endDate = moment().format("YYYY-MM-DD");
+        console.log("made it past variables");
+        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+        client.getTransactions(
+            ACCESS_TOKEN,
+            startDate,
+            endDate,
+            {
+                account_ids: [ACCOUNT_ID]
+            },
+            function (error, transactionResponse) {
+                res.json({
+                    transactions: transactionResponse
+                });
+                console.log(transactionResponse);
+            }
+        )
+    },
+    async getTransactions3Months(req, res) {
+        let USER_ID = [req.params.id];
+
+        let startDate = moment()
+            .subtract(3, "months")
+            .format("YYYY-MM-DD");
+        let endDate = moment().format("YYYY-MM-DD");
+        console.log("made it past variables");
+        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+        client.getTransactions(
+            ACCESS_TOKEN,
+            startDate,
+            endDate,
+            {
+                account_ids: [ACCOUNT_ID]
+            },
+            function (error, transactionResponse) {
+                res.json({
+                    transactions: transactionResponse
+                });
+                console.log(transactionResponse);
+            }
+        )
+    },
+    async getTransactions1Day(req, res) {
+        let USER_ID = [req.params.id];
+
+        let startDate = moment()
+            .subtract(1, "day")
             .format("YYYY-MM-DD");
         let endDate = moment().format("YYYY-MM-DD");
         console.log("made it past variables");
@@ -129,33 +204,6 @@ const Plaid = {
             }
         )
         return transactionPromise
-    },
-    async getTransactionsCurrentYear(req, res) {
-        let USER_ID = [req.params.id];
-        // Pull transactions for the current month
-        let currentDate = moment();
-        let currentYear = currentDate.format("YYYY")
-
-        let startDate = currentYear + "-01-01";
-        console.log(startDate);
-        let endDate = moment().format("YYYY-MM-DD");
-        console.log("made it past variables");
-        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
-        client.getTransactions(
-            ACCESS_TOKEN,
-            startDate,
-            endDate,
-            {
-                account_ids: [ACCOUNT_ID]
-            },
-            function (error, transactionResponse) {
-                res.json({
-                    transactions: transactionResponse
-                });
-                console.log(transactionResponse);
-            }
-        )
     },
     async getCategories(req, res) {
         client.getCategories(function (error, transactionResponse) {
