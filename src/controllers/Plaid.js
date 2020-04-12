@@ -49,28 +49,40 @@ const Plaid = {
         let USER_ID = [req.params.id];
         console.log("user_id:" + USER_ID);
 
-        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+        let ACCESS_TOKENS = await Wallet.getAccessTokensByUserId(USER_ID);
+        console.log("access boy: " + ACCESS_TOKENS);
 
-        console.log("access boy: " + ACCESS_TOKEN);
+        let ACCOUNT_IDS = []
 
-        client.getAccounts(ACCESS_TOKEN, function (error, tokenResponse) {
-            console.log(error);
-            console.log(tokenResponse);
+        let accountPromises = ACCESS_TOKENS.map(access_token => new Promise(async (resolve, reject) => {
+            let account_id = await Wallet.getAccountIdByAccessToken(access_token);
+            console.log("one id: " + account_id);
+            ACCOUNT_IDS.push(account_id);
+            resolve()
+        }));
 
-            tokenResponse.accounts.forEach(account => {
-                if (account.account_id == ACCOUNT_ID) {
-                    let NAME = account.name;
-                    let MASK = account.mask;
-                    res.json({
-                        name: NAME,
-                        mask: MASK
-                    });
-                } else {
+        await Promise.all(accountPromises);
 
-                }
-            });
-        })
+        let accountInformation = [];
+
+        let accessTokenPromises = ACCESS_TOKENS.map((accessToken, i) => new Promise(resolve => {
+            client.getAccounts(accessToken, function (error, tokenResponse) {
+                tokenResponse.accounts.forEach(account => {
+                    if (account.account_id == ACCOUNT_IDS[i]) {
+                        accountInformation.push(account);
+                    } else {
+
+                    }
+                });
+                resolve()
+            })
+        }))
+
+        await Promise.all(accessTokenPromises)
+
+        res.json({
+            accounts: accountInformation
+        });
     },
     async getTransactions30Days(req, res) {
         let USER_ID = [req.params.id];

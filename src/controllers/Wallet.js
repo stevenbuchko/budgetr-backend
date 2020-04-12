@@ -29,16 +29,19 @@ const Wallet = {
         }
     },
 
-    async getAccessTokenByUserId(user_id) {
+    async getAccessTokensByUserId(user_id) {
         console.log(user_id);
         const text = 'SELECT access_token FROM wallets WHERE user_id = \'' + user_id + '\'';
         console.log(text);
         try {
             const { rows } = await db.query(text);
             console.log("rows: " + JSON.stringify(rows));
-            const ACCESS_TOKEN = rows[0].access_token;
-            console.log("my access: " + ACCESS_TOKEN);
-            return ACCESS_TOKEN;
+            const ACCESS_TOKENS = []
+            rows.forEach(row => {
+                ACCESS_TOKENS.push(row.access_token);
+            });
+            console.log("my access: " + ACCESS_TOKENS);
+            return ACCESS_TOKENS;
         } catch (error) {
             console.log(error);
         }
