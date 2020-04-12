@@ -92,10 +92,10 @@ const Plaid = {
             .format("YYYY-MM-DD");
         let endDate = moment().format("YYYY-MM-DD");
         console.log("made it past variables");
-        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+        let ACCESS_TOKEN = await Wallet.getAccessTokensByUserId(USER_ID);
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN[0]);
         client.getTransactions(
-            ACCESS_TOKEN,
+            ACCESS_TOKEN[0],
             startDate,
             endDate,
             {
@@ -117,10 +117,10 @@ const Plaid = {
             .format("YYYY-MM-DD");
         let endDate = moment().format("YYYY-MM-DD");
         console.log("made it past variables");
-        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+        let ACCESS_TOKEN = await Wallet.getAccessTokensByUserId(USER_ID);
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN[0]);
         client.getTransactions(
-            ACCESS_TOKEN,
+            ACCESS_TOKEN[0],
             startDate,
             endDate,
             {
@@ -142,10 +142,10 @@ const Plaid = {
             .format("YYYY-MM-DD");
         let endDate = moment().format("YYYY-MM-DD");
         console.log("made it past variables");
-        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+        let ACCESS_TOKEN = await Wallet.getAccessTokensByUserId(USER_ID);
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN[0]);
         client.getTransactions(
-            ACCESS_TOKEN,
+            ACCESS_TOKEN[0],
             startDate,
             endDate,
             {
@@ -167,10 +167,10 @@ const Plaid = {
             .format("YYYY-MM-DD");
         let endDate = moment().format("YYYY-MM-DD");
         console.log("made it past variables");
-        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+        let ACCESS_TOKEN = await Wallet.getAccessTokensByUserId(USER_ID);
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN[0]);
         client.getTransactions(
-            ACCESS_TOKEN,
+            ACCESS_TOKEN[0],
             startDate,
             endDate,
             {
@@ -195,15 +195,15 @@ const Plaid = {
         console.log(startDate);
         let endDate = moment().format("YYYY-MM-DD");
         console.log("made it past variables");
-        let ACCESS_TOKEN = await Wallet.getAccessTokenByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+        let ACCESS_TOKEN = await Wallet.getAccessTokensByUserId(USER_ID);
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN[0]);
 
         let transactionResolver = () => { }
         let transactionPromise = new Promise(r => {
             transactionResolver = r
         })
         client.getTransactions(
-            ACCESS_TOKEN,
+            ACCESS_TOKEN[0],
             startDate,
             endDate,
             {
