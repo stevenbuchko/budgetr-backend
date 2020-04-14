@@ -3,9 +3,13 @@ import moment from 'moment';
 import Wallet from './Wallet';
 
 var PLAID_CLIENT_ID = "5e5952355eca9300160d9565";
-var PLAID_SECRET = "303aaf825c1d66a9fa10b16802f4e3";
 var PLAID_PUBLIC_KEY = "54c75f7e9700d13893662d872beee7";
-var PLAID_ENV = "development";
+
+// var PLAID_SECRET = "303aaf825c1d66a9fa10b16802f4e3";
+// var PLAID_ENV = "development";
+
+var PLAID_SECRET = "5784c7cd84a74e8b49a26612788eeb";
+var PLAID_ENV = "sandbox";
 
 var ACCESS_TOKEN = null;
 var PUBLIC_TOKEN = null;
