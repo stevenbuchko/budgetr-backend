@@ -1,20 +1,27 @@
 import Plaid from './Plaid';
-import { json } from 'express';
+import Wallet from './Wallet';
 
 const Transactions = {
     async getTotalExpensesCurrentMonth(req, res) {
-        let transactions = [];
         let total_expenses = 0;
-        transactions = await Plaid.getTransactionsCurrentMonth(req.params.id);
-        console.log("respondo: " + transactions);
+        let access_tokens = await Wallet.getAccessTokensByUserId(req.params.id);
 
-        transactions.forEach(transaction => {
-            if (transaction.amount > 0) {
-                total_expenses += transaction.amount;
-            } else {
+        let accessTokenPromises = access_tokens.map(access_token => new Promise(resolve => {
+            console.log('access tokeny: ' + access_token);
+            Plaid.getTransactionsCurrentMonthByAccessToken(access_token).then(transactions => {
+                console.log('transaction in stuff: ' + JSON.stringify(transactions));
+                transactions.forEach(transaction => {
+                    if (transaction.amount > 0) {
+                        total_expenses += transaction.amount;
+                    } else {
 
-            }
-        });
+                    }
+                })
+                resolve();
+            })
+        }))
+
+        await Promise.all(accessTokenPromises);
 
         console.log("total expenses: " + total_expenses);
 

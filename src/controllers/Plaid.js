@@ -84,6 +84,35 @@ const Plaid = {
             accounts: accountInformation
         });
     },
+    async getTransactionsCurrentMonthByAccessToken(access_token) {
+        let ACCESS_TOKEN = access_token;
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+
+        let currentDate = moment();
+        let currentMonth = currentDate.format("MM");
+        let currentYear = currentDate.format("YYYY")
+
+        let startDate = currentYear + "-" + currentMonth + "-01";
+        let endDate = moment().format("YYYY-MM-DD");
+
+        let transactionResolver = () => { }
+        let transactionPromise = new Promise(r => {
+            transactionResolver = r
+        });
+        client.getTransactions(
+            ACCESS_TOKEN,
+            startDate,
+            endDate,
+            {
+                account_ids: [ACCOUNT_ID]
+            },
+            function (error, transactionResponse) {
+                transactionResolver(transactionResponse.transactions)
+            }
+        )
+        return transactionPromise;
+
+    },
     async getTransactions30Days(req, res) {
         let USER_ID = [req.params.id];
         // Pull transactions for the last 30 days
