@@ -213,39 +213,7 @@ const Plaid = {
             }
         )
     },
-    async getTransactionsCurrentMonth(user_id) {
-        let USER_ID = user_id;
-        // Pull transactions for the current month
-        let currentDate = moment();
-        let currentMonth = currentDate.format("MM");
-        let currentYear = currentDate.format("YYYY")
 
-        let startDate = currentYear + "-" + currentMonth + "-01";
-        console.log(startDate);
-        let endDate = moment().format("YYYY-MM-DD");
-        console.log("made it past variables");
-        let ACCESS_TOKEN = await Wallet.getAccessTokensByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN[0]);
-
-        let transactionResolver = () => { }
-        let transactionPromise = new Promise(r => {
-            transactionResolver = r
-        })
-        client.getTransactions(
-            ACCESS_TOKEN[0],
-            startDate,
-            endDate,
-            {
-                account_ids: [ACCOUNT_ID]
-            },
-            function (error, transactionResponse) {
-                console.log("error: " + error);
-                console.log(transactionResponse.transactions);
-                transactionResolver(transactionResponse.transactions)
-            }
-        )
-        return transactionPromise
-    },
     async getCategories(req, res) {
         client.getCategories(function (error, transactionResponse) {
             res.json({ transactionResponse });
