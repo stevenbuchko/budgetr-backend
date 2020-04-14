@@ -115,88 +115,121 @@ const Plaid = {
             }
         )
         return transactionPromise;
-
     },
-    async getTransactions30Days(req, res) {
-        let USER_ID = [req.params.id];
-        // Pull transactions for the last 30 days
+    async getTransactions1DayByAccessToken(access_token) {
+        let ACCESS_TOKEN = access_token;
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+
         let startDate = moment()
-            .subtract(30, "days")
+            .subtract(1, "day")
             .format("YYYY-MM-DD");
         let endDate = moment().format("YYYY-MM-DD");
-        console.log("made it past variables");
-        let ACCESS_TOKEN = await Wallet.getAccessTokensByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN[0]);
+
+        let transactionResolver = () => { }
+        let transactionPromise = new Promise(r => {
+            transactionResolver = r
+        });
+
         client.getTransactions(
-            ACCESS_TOKEN[0],
+            ACCESS_TOKEN,
             startDate,
             endDate,
             {
                 account_ids: [ACCOUNT_ID]
             },
             function (error, transactionResponse) {
-                res.json({
-                    transactions: transactionResponse
-                });
-                console.log(transactionResponse);
+                transactionResolver(transactionResponse.transactions)
             }
         )
+        return transactionPromise;
     },
-    async getTransactions7Days(req, res) {
-        let USER_ID = [req.params.id];
+    async getTransactions7DayByAccessToken(access_token) {
+        let ACCESS_TOKEN = access_token;
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
 
         let startDate = moment()
-            .subtract(7, "days")
+            .subtract(7, "day")
             .format("YYYY-MM-DD");
         let endDate = moment().format("YYYY-MM-DD");
-        console.log("made it past variables");
-        let ACCESS_TOKEN = await Wallet.getAccessTokensByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN[0]);
+
+        let transactionResolver = () => { }
+        let transactionPromise = new Promise(r => {
+            transactionResolver = r
+        });
+
         client.getTransactions(
-            ACCESS_TOKEN[0],
+            ACCESS_TOKEN,
             startDate,
             endDate,
             {
                 account_ids: [ACCOUNT_ID]
             },
             function (error, transactionResponse) {
-                res.json({
-                    transactions: transactionResponse
-                });
-                console.log(transactionResponse);
+                transactionResolver(transactionResponse.transactions)
             }
         )
+        return transactionPromise;
     },
+    async getTransactions30DayByAccessToken(access_token) {
+        let ACCESS_TOKEN = access_token;
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+
+        let startDate = moment()
+            .subtract(30, "day")
+            .format("YYYY-MM-DD");
+        let endDate = moment().format("YYYY-MM-DD");
+
+        let transactionResolver = () => { }
+        let transactionPromise = new Promise(r => {
+            transactionResolver = r
+        });
+
+        client.getTransactions(
+            ACCESS_TOKEN,
+            startDate,
+            endDate,
+            {
+                account_ids: [ACCOUNT_ID]
+            },
+            function (error, transactionResponse) {
+                transactionResolver(transactionResponse.transactions)
+            }
+        )
+        return transactionPromise;
+    },
+    async getTransactions3MonthByAccessToken(access_token) {
+        let ACCESS_TOKEN = access_token;
+        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN);
+
+        let startDate = moment()
+            .subtract(3, "month")
+            .format("YYYY-MM-DD");
+        let endDate = moment().format("YYYY-MM-DD");
+
+        let transactionResolver = () => { }
+        let transactionPromise = new Promise(r => {
+            transactionResolver = r
+        });
+
+        client.getTransactions(
+            ACCESS_TOKEN,
+            startDate,
+            endDate,
+            {
+                account_ids: [ACCOUNT_ID]
+            },
+            function (error, transactionResponse) {
+                transactionResolver(transactionResponse.transactions)
+            }
+        )
+        return transactionPromise;
+    },
+
     async getTransactions3Months(req, res) {
         let USER_ID = [req.params.id];
 
         let startDate = moment()
             .subtract(3, "months")
-            .format("YYYY-MM-DD");
-        let endDate = moment().format("YYYY-MM-DD");
-        console.log("made it past variables");
-        let ACCESS_TOKEN = await Wallet.getAccessTokensByUserId(USER_ID);
-        let ACCOUNT_ID = await Wallet.getAccountIdByAccessToken(ACCESS_TOKEN[0]);
-        client.getTransactions(
-            ACCESS_TOKEN[0],
-            startDate,
-            endDate,
-            {
-                account_ids: [ACCOUNT_ID]
-            },
-            function (error, transactionResponse) {
-                res.json({
-                    transactions: transactionResponse
-                });
-                console.log(transactionResponse);
-            }
-        )
-    },
-    async getTransactions1Day(req, res) {
-        let USER_ID = [req.params.id];
-
-        let startDate = moment()
-            .subtract(1, "day")
             .format("YYYY-MM-DD");
         let endDate = moment().format("YYYY-MM-DD");
         console.log("made it past variables");
