@@ -62,8 +62,10 @@ const Transactions = {
 
         await Promise.all(accessTokenPromises);
 
+        let transactionListSorted = transactionList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
         res.json({
-            transactions: transactionList
+            transactions: transactionListSorted
         });
     },
     async getTransactions7Day(req, res) {
@@ -94,8 +96,10 @@ const Transactions = {
 
         await Promise.all(accessTokenPromises);
 
+        let transactionListSorted = transactionList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
         res.json({
-            transactions: transactionList
+            transactions: transactionListSorted
         });
     },
     async getTransactions30Day(req, res) {
@@ -126,8 +130,10 @@ const Transactions = {
 
         await Promise.all(accessTokenPromises);
 
+        let transactionListSorted = transactionList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
         res.json({
-            transactions: transactionList
+            transactions: transactionListSorted
         });
     },
     async getTransactions3Month(req, res) {
@@ -158,8 +164,10 @@ const Transactions = {
 
         await Promise.all(accessTokenPromises);
 
+        let transactionListSorted = transactionList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
         res.json({
-            transactions: transactionList
+            transactions: transactionListSorted
         });
     }
 }
