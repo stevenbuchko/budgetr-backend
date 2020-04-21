@@ -27,7 +27,7 @@ const Transactions = {
 
         let total_expenses_amount = (total_expenses * -1).toFixed(2);
         let total_revenue_amount = (total_revenue * -1).toFixed(2);
-        let total_expenses_formatted = "-$" + (total_expenses_amount * -1).toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        let total_expenses_formatted = "$" + (total_expenses_amount * -1).toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
         let total_revenue_formatted = "$" + (total_revenue_amount).toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
 
         let total_net = (total_revenue + total_expenses) * -1;
