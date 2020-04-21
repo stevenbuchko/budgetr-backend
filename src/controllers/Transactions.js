@@ -5,17 +5,16 @@ import Wallet from './Wallet';
 const Transactions = {
     async getTotalExpensesCurrentMonth(req, res) {
         let total_expenses = 0;
+        let total_revenue = 0;
         let access_tokens = await Wallet.getAccessTokensByUserId(req.params.id);
 
         let accessTokenPromises = access_tokens.map(access_token => new Promise(resolve => {
-            console.log('access tokeny: ' + access_token);
             Plaid.getTransactionsCurrentMonthByAccessToken(access_token).then(transactions => {
-                console.log('transaction in stuff: ' + JSON.stringify(transactions));
                 transactions.forEach(transaction => {
                     if (transaction.amount > 0) {
                         total_expenses += transaction.amount;
                     } else {
-
+                        total_revenue += transaction.amount;
                     }
                 })
                 resolve();
@@ -26,12 +25,29 @@ const Transactions = {
 
         console.log("total expenses: " + total_expenses);
 
-        let total_expenses_amount = total_expenses.toFixed(2);
-        let total_expenses_formatted = "$" + (total_expenses_amount).toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        let total_expenses_amount = (total_expenses * -1).toFixed(2);
+        let total_revenue_amount = (total_revenue * -1).toFixed(2);
+        let total_expenses_formatted = "-$" + (total_expenses_amount * -1).toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        let total_revenue_formatted = "$" + (total_revenue_amount).toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
+
+        let total_net = (total_revenue + total_expenses) * -1;
+
+        let total_net_amount = total_net.toFixed(2);
+        let total_net_formatted = '';
+
+        if (total_net < 0) {
+            total_net_formatted = "-$" + (total_net_amount * -1).toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        } else {
+            total_net_formatted = "$" + (total_net_amount).toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
 
         res.json({
             total_expenses_amount: total_expenses_amount,
-            total_expenses_formatted: total_expenses_formatted
+            total_expenses_formatted: total_expenses_formatted,
+            total_revenue_amount: total_revenue_amount,
+            total_revenue_formatted: total_revenue_formatted,
+            total_net_amount: total_net_amount,
+            total_net_formatted: total_net_formatted
         });
     },
     async getTransactions1Day(req, res) {
