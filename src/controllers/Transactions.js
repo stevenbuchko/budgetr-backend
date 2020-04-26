@@ -86,7 +86,7 @@ const Transactions = {
 
             expenseDataList.push({
                 x: day,
-                y: total_expenses.toFixed(2)
+                y: Number(total_expenses.toFixed(2))
             });
         }
 
