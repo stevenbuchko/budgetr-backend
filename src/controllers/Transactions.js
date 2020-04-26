@@ -50,6 +50,50 @@ const Transactions = {
             total_net_formatted: total_net_formatted
         });
     },
+    async getExpensesChartData(req, res) {
+        let access_tokens = await Wallet.getAccessTokensByUserId(req.params.id);
+        let expenseDataList = [];
+        let transactionList = [];
+        let total_days = moment().date();
+
+        let accessTokenPromises = access_tokens.map(access_token => new Promise(resolve => {
+            Plaid.getTransactionsCurrentMonthByAccessToken(access_token).then(transactions => {
+                transactions.forEach(transaction => {
+                    let transaction_date = moment(transaction.date).date();
+                    if (transaction.amount > 0) {
+                        transactionList.push({
+                            amount: transaction.amount,
+                            date: transaction_date
+                        })
+                    } else {
+
+                    }
+                })
+                resolve();
+            })
+        }))
+
+        await Promise.all(accessTokenPromises);
+
+        for (var day = 1; day <= total_days; day++) {
+            let total_expenses = 0;
+
+            transactionList.forEach(transaction => {
+                if (transaction.date <= day) {
+                    total_expenses += transaction.amount;
+                }
+            })
+
+            expenseDataList.push({
+                x: day,
+                y: total_expenses.toFixed(2)
+            });
+        }
+
+        res.json({
+            expenseData: expenseDataList
+        });
+    },
     async getTransactions1Day(req, res) {
         let access_tokens = await Wallet.getAccessTokensByUserId(req.params.id);
         let transactionList = [];

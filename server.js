@@ -28,6 +28,7 @@ app.get('/api/v1/transactions3months/:id', Transactions.getTransactions3Month);
 app.get('/api/v1/categories', Plaid.getCategories);
 app.delete('/api/v1/plaid/:id', Plaid.removeItem);
 app.post('/api/v1/transactions/:id', Transactions.getTotalExpensesCurrentMonth);
+app.get('/api/v1/transactions/expenseData/:id', Transactions.getExpensesChartData);
 
 app.listen(3000);
 console.log('app running on port ', 3000);
