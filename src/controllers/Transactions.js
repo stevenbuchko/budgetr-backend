@@ -53,7 +53,9 @@ const Transactions = {
     async getExpensesChartData(req, res) {
         let access_tokens = await Wallet.getAccessTokensByUserId(req.params.id);
         let expenseDataList = [];
-        let transactionList = [];
+        let incomeDataList = [];
+        let expenseTransactionList = [];
+        let incomeTransactionList = [];
         let total_days = moment().date();
 
         let accessTokenPromises = access_tokens.map(access_token => new Promise(resolve => {
@@ -61,12 +63,15 @@ const Transactions = {
                 transactions.forEach(transaction => {
                     let transaction_date = moment(transaction.date).date();
                     if (transaction.amount > 0) {
-                        transactionList.push({
+                        expenseTransactionList.push({
                             amount: transaction.amount,
                             date: transaction_date
                         })
                     } else {
-
+                        incomeTransactionList.push({
+                            amount: transaction.amount * -1,
+                            date: transaction_date
+                        })
                     }
                 })
                 resolve();
@@ -77,10 +82,17 @@ const Transactions = {
 
         for (var day = 1; day <= total_days; day++) {
             let total_expenses = 0;
+            let total_income = 0;
 
-            transactionList.forEach(transaction => {
+            expenseTransactionList.forEach(transaction => {
                 if (transaction.date <= day) {
                     total_expenses += transaction.amount;
+                }
+            })
+
+            incomeTransactionList.forEach(transaction => {
+                if (transaction.date <= day) {
+                    total_income += transaction.amount;
                 }
             })
 
@@ -88,10 +100,16 @@ const Transactions = {
                 x: day,
                 y: Number(total_expenses.toFixed(2))
             });
+
+            incomeDataList.push({
+                x: day,
+                y: Number(total_income.toFixed(2))
+            });
         }
 
         res.json({
-            expenseData: expenseDataList
+            expenseData: expenseDataList,
+            incomeData: incomeDataList
         });
     },
     async getTransactions1Day(req, res) {
